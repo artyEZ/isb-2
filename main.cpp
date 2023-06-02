@@ -22,8 +22,8 @@ void NIST_1(std::vector<bool> input) {
     double sum = 0;
     for (auto i : input)
     {
-        if (i == 0) sum_n += -1;
-        else sum_n += 1;
+        if (i == 0) sum += -1;
+        else sum += 1;
     }
     sum /= sqrt(input.size());
 
