@@ -30,6 +30,23 @@ void NIST_1(std::vector<bool> input) {
     std::cout << "Frequency beat test: " << erfc(sum / sqrt(2));
 }
 
+void NIST_2(std::vector<bool> input) {
+
+    double counter = 0;
+    for (auto i : input) {
+        if (i == 1) counter++;
+    }
+    counter /= 128;
+    if (fabs(counter - 0.5) >= 2 / sqrt(input.size())) std::cout << 0;
+
+    else
+    {
+        int V_n = 0;
+        for (size_t i = 0; i < input.size() - 1; i++) if (input[i] != input[i + 1]) V_n++;
+        std::cout << "Test for identical consecutive bits: " << erfc(fabs(V_n - 2 * input.size() * counter * (1 - counter)) / (2 * sqrt(2 * input.size()) * counter * (1 - counter)));
+    }
+}
+
 int main() {
 
     setlocale(LC_ALL, "Russian");
@@ -43,4 +60,10 @@ int main() {
     std::cout << std::endl;
 
     NIST_1(generated_numbers);
+
+    std::cout << std::endl;
+
+    NIST_2(generated_numbers);
+
+    std::cout << std::endl;
 }
