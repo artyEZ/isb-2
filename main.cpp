@@ -47,14 +47,41 @@ void NIST_2(std::vector<bool> input) {
     }
 }
 
+void NIST_3(std::vector<bool> input) {
+    std::vector<size_t> v = { 0, 0, 0, 0 };
+
+    for (size_t i = 0; i < input.size(); i += 8) {
+        size_t count = 0, max = 0;
+
+        for (size_t j = i; j < (i + 8); j++) {
+            if (input[j] == 1) {
+                count++;
+            }
+            else {
+                if (count > max)max = count;
+                count = 0;
+            }
+        }
+
+        if (count > max)max = count;
+        if (max <= 1)v[0] += 1;
+        if (max == 2)v[1] += 1;
+        if (max == 3)v[2] += 1;
+        if (max >= 4)v[3] += 1;
+    }
+    double pi[4] = { 0.2148, 0.3672, 0.2305, 0.1875 }, Xi = 0;
+    for (int i = 0; i < 4; i++) Xi += pow(v[i] - 16 * pi[i], 2) / (16 * pi[i]);
+    std::cout << "Test for the longest sequence of units in a block : " << pow(Xi, 2) / 2;
+}
+
+
 int main() {
 
-    setlocale(LC_ALL, "Russian");
     std::vector<bool> generated_numbers = generator();
 
     for (const auto& num : generated_numbers)
     {
-        std::cout << num << " ";
+        std::cout << num;
     }
 
     std::cout << std::endl;
@@ -64,6 +91,10 @@ int main() {
     std::cout << std::endl;
 
     NIST_2(generated_numbers);
+
+    std::cout << std::endl;
+
+    NIST_3(generated_numbers);
 
     std::cout << std::endl;
 }
